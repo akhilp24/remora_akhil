@@ -101,6 +101,13 @@ def parse_device(device):
         device = int(device)
     except (ValueError, TypeError):
         pass
+    else:
+        # Historical behavior accepted integer CUDA indices.
+        # Keep this for compatibility while allowing explicit device strings.
+        device = f"cuda:{device}"
+    if isinstance(device, str) and device.lower() == "metal":
+        # Provide a friendlier alias for Apple Metal.
+        device = "mps"
     device = torch.device(device)
     if device.type == "cuda" and not torch.cuda.is_available():
         LOGGER.error(
@@ -109,6 +116,13 @@ def parse_device(device):
             "(https://pytorch.org/get-started/locally/)."
         )
         raise RemoraError("Invalid GPU/CUDA device")
+    if device.type == "mps" and not torch.backends.mps.is_available():
+        LOGGER.error(
+            "Device option specified as MPS, but MPS is not available.\n"
+            "Ensure PyTorch was installed with MPS support and that macOS "
+            "hardware/software support is available."
+        )
+        raise RemoraError("Invalid MPS device")
     return device
 
 

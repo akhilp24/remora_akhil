@@ -1746,8 +1746,11 @@ def register_infer_from_pod5_and_bam(parser):
     comp_grp = subparser.add_argument_group("Compute Arguments")
     comp_grp.add_argument(
         "--device",
-        type=int,
-        help="ID of GPU that is used for inference. Default: CPU only",
+        help=(
+            "Device used for inference. Accepts CUDA index (e.g. 0), "
+            "CUDA device string (e.g. cuda:0), or mps for Apple Metal. "
+            "Default: CPU only."
+        ),
     )
     comp_grp.add_argument(
         "--queue-max",
@@ -1883,8 +1886,11 @@ def register_infer_duplex_from_pod5_and_bam(parser):
     comp_grp = subparser.add_argument_group("Compute Arguments")
     comp_grp.add_argument(
         "--device",
-        type=int,
-        help="ID of GPU that is used for inference. Default: CPU only",
+        help=(
+            "Device used for inference. Accepts CUDA index (e.g. 0), "
+            "CUDA device string (e.g. cuda:0), or mps for Apple Metal. "
+            "Default: CPU only."
+        ),
     )
     comp_grp.add_argument(
         "--num-extract-alignment-workers",
@@ -2249,8 +2255,11 @@ def register_validate_from_remora_dataset(parser):
     )
     comp_grp.add_argument(
         "--device",
-        type=int,
-        help="ID of GPU that is used for inference. Default: CPU",
+        help=(
+            "Device used for validation. Accepts CUDA index (e.g. 0), "
+            "CUDA device string (e.g. cuda:0), or mps for Apple Metal. "
+            "Default: CPU."
+        ),
     )
     comp_grp.add_argument(
         "--read-batches-from-disk",
